@@ -29,9 +29,9 @@ class CassandraConnection implements AfterAllCallback, BeforeAllCallback {
 
     private static final String keyspace = "trellis";
 
-    private Cluster cluster;
+    Cluster cluster;
 
-    private Session session;
+    Session session;
 
     CassandraResourceService resourceService;
 

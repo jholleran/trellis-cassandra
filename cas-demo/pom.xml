@@ -1,0 +1,170 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>edu.si.trellis</groupId>
+    <artifactId>trellis-cassandra</artifactId>
+    <version>0.8-SNAPSHOT</version>
+  </parent>
+  <artifactId>cas-demo</artifactId>
+  <name>Trellis/Cassandra CAS Demonstration</name>
+
+  <properties>
+    <cassandra.contactNode>localhost</cassandra.contactNode>
+  </properties>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.junit</groupId>
+        <artifactId>junit-bom</artifactId>
+        <version>5.3.2</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
+  <dependencies>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>webapp</artifactId>
+      <version>${project.version}</version>
+      <type>war</type>
+    </dependency>
+    <!-- required to reuse edu.si.trellis.ByteBufferInputStream -->
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>impl</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.boofcv</groupId>
+      <artifactId>boofcv-core</artifactId>
+      <version>0.32</version>
+    </dependency>
+
+    <!-- logging -->
+    <dependency>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-classic</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+    <!-- test gear -->
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>impl</artifactId>
+      <version>${project.version}</version>
+      <classifier>tests</classifier>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-engine</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.platform</groupId>
+      <artifactId>junit-platform-launcher</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jboss.resteasy</groupId>
+      <artifactId>resteasy-client</artifactId>
+      <version>3.6.1.Final</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <configuration>
+          <portNames combine.children="append">
+            <portName>trellis.port</portName>
+          </portNames>
+        </configuration>
+      </plugin>
+      <plugin>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <skipTests>true</skipTests>
+        </configuration>
+      </plugin>
+      <plugin>
+        <artifactId>maven-failsafe-plugin</artifactId>
+        <configuration>
+          <systemProperties combine.children="append">
+            <cassandra.contactAddress>${cassandra.contactAddress}</cassandra.contactAddress>
+          </systemProperties>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>cassandra-maven-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.cargo</groupId>
+        <artifactId>cargo-maven2-plugin</artifactId>
+        <version>1.6.10</version>
+        <configuration>
+          <container>
+            <containerId>wildfly-swarm2017x</containerId>
+            <type>installed</type>
+            <home>${project.basedir}/../webapp/target/webapp-${project.version}-hollow-thorntail.jar</home>
+            <systemProperties>
+              <project.build.directory>${project.build.directory}</project.build.directory>
+              <trellis.port>${trellis.port}</trellis.port>
+              <cassandra.contactPort>${cassandra.nativeTransportPort}</cassandra.contactPort>
+              <cassandra.contactNode>${cassandra.contactNode}</cassandra.contactNode>
+              <java.net.preferIPv4Stack>true</java.net.preferIPv4Stack>
+              <org.jboss.logging.provider>slf4j</org.jboss.logging.provider>
+              <logback.configurationFile>${project.build.directory}/test-classes/logback-test.xml</logback.configurationFile>
+              <resteasy.preferJacksonOverJsonB>false</resteasy.preferJacksonOverJsonB>
+            </systemProperties>
+          </container>
+          <configuration>
+            <type>standalone</type>
+            <properties>
+              <cargo.servlet.uriencoding>UTF-8</cargo.servlet.uriencoding>
+              <cargo.jvmargs>-Xmx1024m</cargo.jvmargs>
+              <cargo.servlet.port>${trellis.port}</cargo.servlet.port>
+              <cargo.swarm.hollowswarm>true</cargo.swarm.hollowswarm>
+              <!-- <cargo.swarm.project.name>${project.name}</cargo.swarm.project.name> -->
+              <cargo.swarm.ping.url>http://localhost:${trellis.port}</cargo.swarm.ping.url>
+              <cargo.process.spawn>true</cargo.process.spawn>
+            </properties>
+          </configuration>
+          <deployables>
+            <deployable>
+              <groupId>${project.groupId}</groupId>
+              <artifactId>webapp</artifactId>
+              <type>war</type>
+              <pingUrlPath>/</pingUrlPath>
+              <pingTimeout>60000</pingTimeout>
+            </deployable>
+          </deployables>
+        </configuration>
+        <executions>
+          <execution>
+            <id>start-server</id>
+            <goals>
+              <goal>start</goal>
+            </goals>
+            <phase>pre-integration-test</phase>
+          </execution>
+          <execution>
+            <id>stop-server</id>
+            <goals>
+              <goal>stop</goal>
+            </goals>
+            <phase>post-integration-test</phase>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+
+</project>

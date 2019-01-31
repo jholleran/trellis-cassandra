@@ -8,7 +8,7 @@ import java.nio.ByteBuffer;
  * An {@link InputStream} that wraps a {@link ByteBuffer} to avoid copying byte arrays.
  *
  */
-class ByteBufferInputStream extends InputStream {
+public class ByteBufferInputStream extends InputStream {
 
     private static final int ENDOFSTREAM = -1;
 

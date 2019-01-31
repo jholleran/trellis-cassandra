@@ -114,6 +114,16 @@
     <pluginManagement>
       <plugins>
         <plugin>
+          <artifactId>maven-jar-plugin</artifactId>
+          <executions>
+            <execution>
+              <goals>
+                <goal>test-jar</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+        <plugin>
           <artifactId>maven-surefire-plugin</artifactId>
           <version>2.22.1</version>
           <configuration>
@@ -456,6 +466,12 @@
         <sonar.jacoco.reportPaths>${jacoco.destFile}</sonar.jacoco.reportPaths>
         <sonar.organization>trellis-ldp</sonar.organization>
       </properties>
+    </profile>
+    <profile>
+      <id>cas-demo</id>
+      <modules>
+        <module>cas-demo</module>
+      </modules>
     </profile>
   </profiles>
 </project>
