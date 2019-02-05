@@ -13,18 +13,13 @@ public abstract class LazyFilterInputStream extends InputStream {
     private InputStream wrapped;
 
     private InputStream wrapped() {
-        if (wrapped == null) initialize();
-        return wrapped;
+        return wrapped == null ? wrapped = initialize() : wrapped;
     }
 
     /**
      * Implementations of this method should use {@link #wrap(InputStream)} to fill {@link #wrapped}.
      */
-    protected abstract void initialize();
-
-    protected void wrap(InputStream w) {
-        this.wrapped = w;
-    }
+    protected abstract InputStream initialize();
 
     @Override
     public int read() throws IOException {
@@ -53,7 +48,7 @@ public abstract class LazyFilterInputStream extends InputStream {
 
     @Override
     public void close() throws IOException {
-        if (wrapped != null) wrapped.close();
+        wrapped().close();
     }
 
     @Override

@@ -64,7 +64,7 @@ class CassandraConnection implements AfterAllCallback, BeforeAllCallback {
                         new edu.si.trellis.query.rdf.MutableRetrieve(session, consistency),
                         new edu.si.trellis.query.rdf.ImmutableRetrieve(session, consistency),
                         new edu.si.trellis.query.rdf.BasicContainment(session, consistency));
-        resourceService.initializeQueriesAndRoot();
+        resourceService.initializeRoot();
         this.binaryService = new CassandraBinaryService((IdentifierService) null, 1024 * 1024,
                         new edu.si.trellis.query.binary.Get(session, consistency),
                         new edu.si.trellis.query.binary.Insert(session, consistency),

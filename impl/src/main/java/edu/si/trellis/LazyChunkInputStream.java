@@ -9,7 +9,7 @@ import com.datastax.driver.core.Statement;
 import java.io.InputStream;
 
 /**
- * An {@link InputStream} backed by a Cassandra query to retrieve one binary chunk.
+ * A {@link LazyFilterInputStream} backed by a Cassandra query to retrieve one binary chunk.
  * <p>
  * Not thread-safe!
  * </p>
@@ -28,8 +28,8 @@ public class LazyChunkInputStream extends LazyFilterInputStream {
     }
 
     @Override
-    protected void initialize() {
+    protected InputStream initialize() {
         Row row = requireNonNull(session.execute(query).one(), "Missing binary chunk!");
-        wrap(row.get("chunk", InputStream.class));
+        return row.get("chunk", InputStream.class);
     }
 }

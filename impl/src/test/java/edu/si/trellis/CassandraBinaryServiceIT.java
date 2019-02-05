@@ -32,12 +32,12 @@ import org.slf4j.Logger;
 import org.trellisldp.api.Binary;
 import org.trellisldp.api.RuntimeTrellisException;
 
-public class CassandraBinaryServiceIT extends CassandraServiceIT {
+class CassandraBinaryServiceIT extends CassandraServiceIT {
 
     private static final Logger log = getLogger(CassandraBinaryServiceIT.class);
 
     @Test
-    public void setAndGetSmallContent() throws Exception {
+    void setAndGetSmallContent() throws Exception {
         IRI id = createIRI();
         log.debug("Using identifier: {} for testSetAndGetSmallContent", id);
         String content = "This is only a short test, but it has meaning";
@@ -68,7 +68,7 @@ public class CassandraBinaryServiceIT extends CassandraServiceIT {
     }
 
     @Test
-    public void setAndGetMultiChunkContent() throws Exception {
+    void setAndGetMultiChunkContent() throws Exception {
         IRI id = createIRI();
         final String md5sum = "89c4b71c69f59cde963ce8aa9dbe1617";
         try (FileInputStream testData = new FileInputStream("src/test/resources/test.jpg")) {
@@ -96,7 +96,7 @@ public class CassandraBinaryServiceIT extends CassandraServiceIT {
     }
 
     @Test
-    public void varyChunkSizeFromDefault() throws IOException, InterruptedException, ExecutionException {
+    void varyChunkSizeFromDefault() throws IOException, InterruptedException, ExecutionException {
         IRI id = createIRI();
         final String chunkSize = "10000000";
         final String md5sum = "89c4b71c69f59cde963ce8aa9dbe1617";

@@ -16,6 +16,7 @@ import edu.si.trellis.LazyChunkInputStream;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.UUID;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -23,8 +24,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-@SuppressWarnings("resource")
-public class LazyChunkInputStreamTest {
+class LazyChunkInputStreamTest {
 
     @Mock
     private Session mockSession;
@@ -46,18 +46,20 @@ public class LazyChunkInputStreamTest {
     private int off = 0, len = 0, n = 0, readlimit = 0;
 
     @Test
-    public void badQuery() {
-        RuntimeException e = new RuntimeException("Expected");
+    void badQuery() {
+        RuntimeException e = new RuntimeException("Expected exception!");
         when(mockSession.execute(mockQuery)).thenThrow(e);
-        try (LazyChunkInputStream testLazyChunkInputStream = new LazyChunkInputStream(mockSession, mockQuery)) {
+        try {
+            LazyChunkInputStream testLazyChunkInputStream = new LazyChunkInputStream(mockSession, mockQuery);
             testLazyChunkInputStream.read();
+            testLazyChunkInputStream.close();
         } catch (Exception e1) {
             assertSame(e, e1, "Didn't get the exception we expected!");
         }
     }
 
     @Test
-    public void noData() {
+    void noData() {
         when(mockSession.execute(mockQuery)).thenReturn(mockResultSet);
         when(mockResultSet.one()).thenReturn(null);
 
@@ -70,7 +72,7 @@ public class LazyChunkInputStreamTest {
     }
 
     @Test
-    public void normalOperation() throws IOException {
+    void normalOperation() throws IOException {
         when(mockSession.execute(mockQuery)).thenReturn(mockResultSet);
         when(mockResultSet.one()).thenReturn(mockRow);
         when(mockRow.get("chunk", InputStream.class)).thenReturn(mockInputStream);

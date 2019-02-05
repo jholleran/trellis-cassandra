@@ -75,6 +75,9 @@ public class CassandraResourceService implements ResourceService, MementoService
      * @param mutableInsert the {@link MutableInsert} query to use
      * @param mementos the {@link Mementos} query to use
      * @param touch the {@link Touch} query to use
+     * @param mutableRetrieve the {@link MutableRetrieve} query to use
+     * @param immutableRetrieve the {@link ImmutableRetrieve} query to use
+     * @param bcontainment the {@link BasicContainment} query to use
      */
     @Inject
     public CassandraResourceService(Delete delete, Get get, ImmutableInsert immutableInsert,
@@ -93,17 +96,16 @@ public class CassandraResourceService implements ResourceService, MementoService
 
     /**
      * Build a root container.
-     * 
-     * @throws Exception
      */
     @PostConstruct
-    void initializeQueriesAndRoot() {
-
+    void initializeRoot() {
         IRI rootIri = TrellisUtils.getInstance().createIRI(TRELLIS_DATA_PREFIX);
         try {
             if (get(rootIri).get().equals(MISSING_RESOURCE)) {
+                log.info("Building repository root...");
                 Metadata rootResource = builder(rootIri).interactionModel(BasicContainer).build();
                 create(rootResource, null).get();
+                log.info("Done building repository root.");                
             }
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();

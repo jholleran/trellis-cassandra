@@ -31,7 +31,7 @@ public class QrCodeExtractor {
      * @param image a {@link ByteBuffer} containing an image
      * @return the first {@link QrCode} detected or {@code null} if none is detected
      */
-    public static QrCode process(ByteBuffer image) {
+    public static String process(ByteBuffer image) {
 
         QrCodeDetector<GrayU8> detector = FactoryFiducial.qrcode(null, GrayU8.class);
 
@@ -43,6 +43,6 @@ public class QrCodeExtractor {
             throw new UncheckedIOException(e);
         }
         List<QrCode> detections = detector.getDetections();
-        return detections.isEmpty() ? null : detections.get(0);
+        return detections.isEmpty() ? null : detections.get(0).message;
     }
 }

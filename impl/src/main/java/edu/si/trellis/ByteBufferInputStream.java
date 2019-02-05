@@ -68,4 +68,9 @@ public class ByteBufferInputStream extends InputStream {
         readSinceMark += availableLength;
         return availableLength;
     }
+    
+    @Override
+    public void close() {
+        // NO OP
+    }
 }

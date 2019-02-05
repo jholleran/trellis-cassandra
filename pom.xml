@@ -115,6 +115,7 @@
       <plugins>
         <plugin>
           <artifactId>maven-jar-plugin</artifactId>
+          <version>3.1.1</version>
           <executions>
             <execution>
               <goals>
@@ -140,8 +141,6 @@
           <artifactId>maven-failsafe-plugin</artifactId>
           <version>2.22.1</version>
           <configuration>
-            <!-- for JaCoCo -->
-            <argLine>@{failsafeArgLine}</argLine>
             <!-- https://issues.apache.org/jira/browse/SUREFIRE-1588 -->
             <useSystemClassLoader>false</useSystemClassLoader>
             <trimStackTrace>false</trimStackTrace>
@@ -197,7 +196,7 @@
           <version>3.6</version>
           <configuration>
             <startNativeTransport>true</startNativeTransport>
-            <addTestClasspath>true</addTestClasspath>
+            <!-- <addTestClasspath>true</addTestClasspath> -->
             <!-- Because of the naming of these Maven properties, we need not explicitly link them here but we do
               for trace-ability. See http://www.mojohaus.org/cassandra-maven-plugin/start-mojo.html -->
             <nativeTransportPort>${cassandra.nativeTransportPort}</nativeTransportPort>

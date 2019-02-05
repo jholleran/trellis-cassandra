@@ -15,6 +15,7 @@ import org.slf4j.Logger;
 /**
  * A context for queries run against Cassandra. All requests to Cassandra should go through a subclass.
  *
+ * This type is {@code public} only for use across subpackages of this package.
  */
 public abstract class CassandraQuery {
 

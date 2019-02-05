@@ -12,28 +12,22 @@ import java.nio.ByteBuffer;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-import org.apache.commons.rdf.api.BlankNodeOrIRI;
-import org.apache.commons.rdf.api.Dataset;
-import org.apache.commons.rdf.api.Graph;
-import org.apache.commons.rdf.api.IRI;
-import org.apache.commons.rdf.api.Quad;
-import org.apache.commons.rdf.api.RDF;
-import org.apache.commons.rdf.api.RDFTerm;
+import org.apache.commons.rdf.api.*;
 import org.apache.commons.rdf.simple.SimpleRDF;
 import org.apache.jena.riot.RiotException;
 import org.junit.jupiter.api.Test;
 
-public class DatasetCodecTest {
+class DatasetCodecTest {
 
     private static final RDF rdf = new SimpleRDF();
 
     @Test
-    public void badParse() {
+    void badParse() {
         assertThrows(InvalidTypeException.class, () -> datasetCodec.parse("SGDF   &&$$$dfshgou;sdfhgoudfhogh"));
     }
 
     @Test
-    public void testParse() throws Exception {
+    void testParse() throws Exception {
         String nQuad1 = "<s> <p> <o> <g> .";
         Quad q1 = quad(iri("g"), iri("s"), iri("p"), iri("o"));
         String nQuad2 = "<s1> <p1> \"foo\" .";
@@ -49,7 +43,7 @@ public class DatasetCodecTest {
     }
 
     @Test
-    public void testDeserialize() throws Exception {
+    void testDeserialize() throws Exception {
         String nQuad1 = "<s> <p> <o> <g> .";
         Quad q1 = quad(iri("g"), iri("s"), iri("p"), iri("o"));
         String nQuad2 = "<s1> <p1> \"foo\" .";
@@ -65,7 +59,7 @@ public class DatasetCodecTest {
     }
 
     @Test
-    public void testFormat() throws Exception {
+    void testFormat() throws Exception {
         String nQuad = "<s> <p> <o> <g> .";
         Quad q = quad(iri("g"), iri("s"), iri("p"), iri("o"));
         try (Dataset dataset = rdf.createDataset()) {
@@ -77,45 +71,45 @@ public class DatasetCodecTest {
     }
 
     @Test
-    public void edgeCase1() {
+    void edgeCase1() {
         assertEquals(0, datasetCodec.parse(null).size());
     }
 
     @Test
-    public void edgeCase2() {
+    void edgeCase2() {
         assertEquals(null, datasetCodec.format(null));
     }
 
     @Test
-    public void edgeCase3() throws Exception {
+    void edgeCase3() throws Exception {
         try (Dataset empty = rdf.createDataset()) {
             assertEquals(null, datasetCodec.format(empty));
         }
     }
 
     @Test
-    public void edgeCase4() throws Exception {
+    void edgeCase4() throws Exception {
         try (Dataset empty = rdf.createDataset()) {
             assertEquals(null, datasetCodec.serialize(empty, null));
         }
     }
 
     @Test
-    public void edgeCase5() throws Exception {
+    void edgeCase5() {
         assertEquals(null, datasetCodec.serialize(null, null));
     }
 
     @Test
-    public void edgeCase6() throws Exception {
+    void edgeCase6() {
         assertEquals(0, datasetCodec.deserialize(null, null).size());
     }
 
     @Test
-    public void badData() {
+    void badData() {
         assertThrows(InvalidTypeException.class, () -> datasetCodec.serialize(new BadDataset(), null));
     }
 
-    private Quad quad(BlankNodeOrIRI g, BlankNodeOrIRI s, IRI p, RDFTerm o) {
+    Quad quad(BlankNodeOrIRI g, BlankNodeOrIRI s, IRI p, RDFTerm o) {
         return rdf.createQuad(g, s, p, o);
     }
 

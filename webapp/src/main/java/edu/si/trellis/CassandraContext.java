@@ -115,6 +115,10 @@ public class CassandraContext {
 
     private final CountDownLatch sessionInitialized = new CountDownLatch(1);
 
+    private int connectTimeoutMillis;
+
+    private int readTimeoutMillis;
+
     /**
      * Poll timeout in ms for waiting for Cassandra connection.
      */
@@ -135,6 +139,10 @@ public class CassandraContext {
                         .withPort(parseInt(contactPort)).build();
         if (log.isDebugEnabled()) cluster.register(QueryLogger.builder().build());
         cluster.getConfiguration().getCodecRegistry().register(STANDARD_CODECS);
+        SocketOptions socketOptions = cluster.getConfiguration().getSocketOptions();
+        socketOptions.setConnectTimeoutMillis(connectTimeoutMillis)
+        .setReadTimeoutMillis(readTimeoutMillis)
+        .setTcpNoDelay(tcpNoDelay)
         Timer connector = new Timer("Cassandra Connection Maker", true);
         log.debug("Connecting to Cassandra...");
         connector.schedule(new TimerTask() {

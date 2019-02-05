@@ -221,6 +221,10 @@
       </plugin>
       <plugin>
         <artifactId>maven-failsafe-plugin</artifactId>
+        <configuration>
+          <!-- for JaCoCo -->
+          <argLine>@{failsafeArgLine}</argLine>
+        </configuration>
       </plugin>
       <plugin>
         <groupId>io.thorntail</groupId>

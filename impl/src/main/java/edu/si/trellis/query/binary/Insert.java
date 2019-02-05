@@ -15,6 +15,10 @@ import javax.inject.Inject;
 
 import org.apache.commons.rdf.api.IRI;
 
+/**
+ * A query that inserts an {@link InputStream} of content and associated metadata.
+ *
+ */
 public class Insert extends CassandraQuery implements Executor {
 
     @Inject

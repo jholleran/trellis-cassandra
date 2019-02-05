@@ -15,7 +15,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
 @SuppressWarnings("resource")
-public class CassandraBinaryTest {
+class CassandraBinaryTest {
 
     private final RDF factory = new SimpleRDF();
 
@@ -44,7 +44,7 @@ public class CassandraBinaryTest {
     private InputStream mockInputStream;
 
 //    @Test
-//    public void noContent() {
+//    void noContent() {
 //        when(mockSession.prepare(anyString())).thenReturn(mockPreparedStatement1);
 //        when(mockPreparedStatement1.bind(testId)).thenReturn(mockBoundStatement1);
 //        when(mockPreparedStatement1.setConsistencyLevel(any())).thenReturn(mockPreparedStatement1);
@@ -69,7 +69,7 @@ public class CassandraBinaryTest {
 
         private Row row;
 
-        public TestRowSpliterator(long size, Row row) {
+        TestRowSpliterator(long size, Row row) {
             this.size = size;
             this.row = row;
         }
@@ -82,17 +82,20 @@ public class CassandraBinaryTest {
         }
 
         @Override
-        public Spliterator<Row> trySplit() {
+        public
+        Spliterator<Row> trySplit() {
             return null;
         }
 
         @Override
-        public long estimateSize() {
+        public
+        long estimateSize() {
             return size;
         }
 
         @Override
-        public int characteristics() {
+        public
+        int characteristics() {
             return 0;
         }
     }

@@ -107,6 +107,8 @@
       <plugin>
         <artifactId>maven-failsafe-plugin</artifactId>
         <configuration>
+          <!-- for JaCoCo -->
+          <argLine>@{failsafeArgLine}</argLine>
           <systemProperties combine.children="append">
             <cassandra.contactAddress>${cassandra.contactAddress}</cassandra.contactAddress>
           </systemProperties>
