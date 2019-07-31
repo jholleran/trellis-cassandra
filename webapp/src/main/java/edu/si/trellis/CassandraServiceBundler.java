@@ -1,12 +1,20 @@
 package edu.si.trellis;
 
+import static java.util.Collections.singletonList;
+
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 
 import org.trellisldp.api.*;
+import org.trellisldp.constraint.LdpConstraints;
+import org.trellisldp.http.core.EtagGenerator;
+import org.trellisldp.http.core.ServiceBundler;
+import org.trellisldp.http.core.TimemapGenerator;
 import org.trellisldp.io.JenaIOService;
+
+import java.util.List;
 
 /**
  * Use to supply injected components for a Trellis application.
@@ -32,6 +40,12 @@ public class CassandraServiceBundler implements ServiceBundler {
 
     @Inject
     private NamespaceService namespaceService;
+
+    private TimemapGenerator timemapGenerator = new TimemapGenerator() { };
+
+    private EtagGenerator etagGenerator = new EtagGenerator() { };
+
+    private List<ConstraintService> constraintServices = singletonList(new LdpConstraints());
 
     @Produces
     @ApplicationScoped
@@ -82,4 +96,13 @@ public class CassandraServiceBundler implements ServiceBundler {
     public EventService getEventService() {
         return eventService;
     }
+
+    @Override
+    public TimemapGenerator getTimemapGenerator() { return timemapGenerator; }
+
+    @Override
+    public EtagGenerator getEtagGenerator() { return etagGenerator; }
+
+    @Override
+    public Iterable<ConstraintService> getConstraintServices() { return constraintServices; }
 }
