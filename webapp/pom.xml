@@ -56,12 +56,6 @@
       <groupId>org.trellisldp</groupId>
       <artifactId>trellis-http</artifactId>
       <version>${trellis.version}</version>
-      <exclusions>
-        <exclusion>
-          <groupId>org.apache.tamaya</groupId>
-          <artifactId>tamaya-api</artifactId>
-        </exclusion>
-      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.trellisldp</groupId>
@@ -70,25 +64,8 @@
     </dependency>
     <dependency>
       <groupId>org.trellisldp</groupId>
-      <artifactId>trellis-rdfa</artifactId>
-      <version>${trellis.version}</version>
-      <exclusions>
-        <exclusion>
-          <groupId>org.apache.tamaya</groupId>
-          <artifactId>tamaya-api</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-    <dependency>
-      <groupId>org.trellisldp</groupId>
       <artifactId>trellis-io-jena</artifactId>
       <version>${trellis.version}</version>
-      <exclusions>
-        <exclusion>
-          <groupId>org.apache.tamaya</groupId>
-          <artifactId>tamaya-api</artifactId>
-        </exclusion>
-      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.trellisldp</groupId>
@@ -104,12 +81,6 @@
       <groupId>org.trellisldp</groupId>
       <artifactId>trellis-webac</artifactId>
       <version>${trellis.version}</version>
-      <exclusions>
-        <exclusion>
-          <groupId>org.apache.tamaya</groupId>
-          <artifactId>tamaya-api</artifactId>
-        </exclusion>
-      </exclusions>
     </dependency>
 
   <!-- Configuration -->
